@@ -105,12 +105,15 @@ class Board:
         sorted_map = sorted(possible_values_map.items(), key=lambda kv:(kv[1], kv[0]))
         idx, _ = sorted_map[0]
         for pos in self.cells[idx].possible_values:
-            trial = deepcopy(self)
-            trial.cells[idx].set_value(pos)
-            if trial.solve():
-                self.solutions += trial.solutions
-                self.cells = trial.cells
-                return True
+            try:
+                trial = deepcopy(self)
+                trial.cells[idx].set_value(pos)
+                if trial.solve():
+                    self.solutions += trial.solutions
+                    self.cells = trial.cells
+                    return True
+            except ValueError:
+                continue
 
 def parse_board(input):
     lines = input.split("\n")
@@ -160,9 +163,31 @@ ____61___"""
 -----5---
 --82----7
 """
-    board = parse_board(input4)
+    input5 = """
+--7--51-3
+6--9-----
+2------71
+-9----2--
+-18-7----
+3--84---6
+-----2---
+--9-3--4-
+"""
+    input6 = """
+--7---1--
+32-------
+--9-62--4
+-----8---
+-3-64-2-7
+-74----6-
+---1-----
+7853---1-
+---8--72-
+"""
+    board = parse_board(input6)
     b = Board(board)
     b.solve()
     print("Solved: ")
     for solution in b.solutions:
         print(solution)
+

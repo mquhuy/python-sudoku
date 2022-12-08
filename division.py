@@ -27,3 +27,4 @@ class Division:
                 value_cells[0].set_value(value)
                 make_difference = True
         return make_difference
+
